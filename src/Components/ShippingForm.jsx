@@ -13,10 +13,13 @@ const ShippingForm = ({
   const [address, setAddress] = useState("")
   const dispatch = useDispatch()
 
+  const user = JSON.parse(localStorage.getItem("user"))
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const shippingInfo = {
-      firstName,
+      userId: user.id,
+      firstName: user.name,
       lastName,
       address,
       selectedItems, // Dodajte selektovane stavke kao deo informacija o dostavi

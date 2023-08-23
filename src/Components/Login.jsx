@@ -21,8 +21,13 @@ const Login = () => {
 
     // Provjera uslova validacije
     if (userValidation && passwordValidation) {
-      dispatch(login({ name: username })) // Dodajte ime korisnika u akciju
+      dispatch(login({ name: username, id: Math.random() })) // Dodajte ime korisnika u akciju
       localStorage.setItem("isLoggedIn", "true")
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ name: username, id: Math.random() })
+      )
+      console.log("kilk")
       navigate("/")
     } else {
       // Ovdje možete prikazati poruku o neispravnim podacima

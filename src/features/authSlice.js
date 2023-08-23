@@ -4,7 +4,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     username: localStorage.getItem("username") || null, // Dodajte svojstvo za korisničko ime
   },
   reducers: {
