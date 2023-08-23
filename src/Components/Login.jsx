@@ -1,4 +1,10 @@
-import { Card, Input, Button, Typography } from "@material-tailwind/react"
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Checkbox,
+} from "@material-tailwind/react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { login } from "../features/authSlice"
@@ -10,6 +16,11 @@ const Login = () => {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  const handleAdminChange = (event) => {
+    setIsAdmin(event.target.checked)
+  }
 
   const handleLogin = () => {
     // Vaša validacija za ime i lozinku
@@ -21,11 +32,11 @@ const Login = () => {
 
     // Provjera uslova validacije
     if (userValidation && passwordValidation) {
-      dispatch(login({ name: username, id: Math.random() })) // Dodajte ime korisnika u akciju
+      dispatch(login({ name: username, id: Math.random(), isAdmin }))
       localStorage.setItem("isLoggedIn", "true")
       localStorage.setItem(
         "user",
-        JSON.stringify({ name: username, id: Math.random() })
+        JSON.stringify({ name: username, id: Math.random(), isAdmin })
       )
       console.log("kilk")
       navigate("/")
@@ -59,6 +70,14 @@ const Login = () => {
                 label="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center justify-center">
+              <Checkbox
+                defaultChecked={false}
+                label="Admin"
+                checked={isAdmin}
+                onChange={handleAdminChange}
               />
             </div>
 
