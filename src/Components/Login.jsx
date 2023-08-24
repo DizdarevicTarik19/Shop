@@ -23,14 +23,12 @@ const Login = () => {
   }
 
   const handleLogin = () => {
-    // Vaša validacija za ime i lozinku
     const userValidation = /^[A-Za-z]{4,10}$/i.test(username)
     const passwordValidation =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,10}$/i.test(
         password
       )
 
-    // Provjera uslova validacije
     if (userValidation && passwordValidation) {
       dispatch(login({ name: username, id: Math.random(), isAdmin }))
       localStorage.setItem("isLoggedIn", "true")
@@ -38,11 +36,13 @@ const Login = () => {
         "user",
         JSON.stringify({ name: username, id: Math.random(), isAdmin })
       )
-      console.log("kilk")
+
       navigate("/")
     } else {
-      // Ovdje možete prikazati poruku o neispravnim podacima
-      toast.error("UserName or Password is incorrect!")
+      toast.error("Name or Password is incorrect!")
+      toast.info(
+        "The code must have an uppercase letter, a lowercase letter, a number and one character"
+      )
     }
   }
 

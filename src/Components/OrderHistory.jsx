@@ -3,7 +3,10 @@ import { useSelector } from "react-redux"
 
 const OrderHistory = ({ onClose }) => {
   const completedOrders = useSelector((state) => state.cart.completedOrders)
-  console.log(completedOrders)
+
+  const userId = JSON.parse(localStorage.getItem("user")).id
+
+  const userOrders = completedOrders.filter((order) => order.userId === userId)
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/60">
@@ -33,7 +36,7 @@ const OrderHistory = ({ onClose }) => {
         <div className="p-4">
           <h2 className="font-bold text-lg mb-4 ">Order History</h2>
           <div className="overflow-y-scroll max-h-[400px]">
-            {completedOrders?.map((order, index) => (
+            {userOrders?.map((order, index) => (
               <div
                 key={index}
                 className="mb-2 border border-gray-500 scroll bg-blue-gray-100 rounded-xl flex flex-col items-start p-2"

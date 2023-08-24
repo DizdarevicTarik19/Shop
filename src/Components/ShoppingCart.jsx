@@ -5,7 +5,6 @@ import { useState } from "react"
 import ShippingForm from "./ShippingForm"
 import { useEffect } from "react"
 import { clearSelectedItems } from "../features/cartSlice"
-import { addCompletedOrder } from "../features/cartSlice"
 import { toast } from "react-toastify"
 
 const ShoppingCart = ({ setIsModalOpen }) => {
@@ -14,11 +13,6 @@ const ShoppingCart = ({ setIsModalOpen }) => {
   const cart = useSelector((state) => state.cart.cart)
   const dispatch = useDispatch()
   const [isAtLeastOneChecked, setIsAtLeastOneChecked] = useState(false)
-
-  const totalCartPrice = cart.reduce(
-    (total, item) => total + item.amount * item.price,
-    0
-  )
 
   const handleCheckboxChange = (index) => {
     dispatch(toggleCheckbox(index))
@@ -29,7 +23,6 @@ const ShoppingCart = ({ setIsModalOpen }) => {
   const handleBuyNow = () => {
     const selected = cart.filter((item) => item.isChecked)
 
-    // Proverite da li postoji bar jedna stavka checked
     const hasAtLeastOneChecked = selected.length > 0
     if (hasAtLeastOneChecked) {
       setSelectedItems(selected)
@@ -51,6 +44,15 @@ const ShoppingCart = ({ setIsModalOpen }) => {
     dispatch(removeFromCart(item))
     toast.success("Item removed from cart successfully!")
   }
+
+  const userId = JSON.parse(localStorage.getItem("user")).id
+
+  const userCartItems = cart.filter((item) => item.userId === userId)
+
+  const totalCartPrice = userCartItems.reduce(
+    (total, item) => total + item.amount * item.price,
+    0
+  )
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/60 ">
@@ -79,13 +81,13 @@ const ShoppingCart = ({ setIsModalOpen }) => {
           </div>
 
           <div>
-            {cart.length > 0 ? (
+            {userCartItems.length > 0 ? (
               <div className="flex flex-col">
                 <p className="font-sans font-bold text-black-600 text-xl text-start">
                   Shopping Bag
                 </p>
 
-                {cart.map((item, index) => {
+                {userCartItems.map((item, index) => {
                   return (
                     <div
                       key={item.id}

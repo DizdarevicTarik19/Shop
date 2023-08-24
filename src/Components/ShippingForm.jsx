@@ -22,15 +22,14 @@ const ShippingForm = ({
       firstName: user.name,
       lastName,
       address,
-      selectedItems, // Dodajte selektovane stavke kao deo informacija o dostavi
-      totalCheckedPrice, // Dodajte ukupnu cenu kao deo informacija o dostavi
+      selectedItems,
+      totalCheckedPrice,
     }
 
     console.log(shippingInfo)
     toast.success("The order has been successfully completed!")
     toast.info("You can see the order history by clicking on the green button")
 
-    // Reset form fields
     setFirstName("")
     setLastName("")
     setAddress("")
@@ -39,7 +38,6 @@ const ShippingForm = ({
     setShowShippingForm(false)
 
     dispatch(addCompletedOrder(shippingInfo))
-    console.log(shippingInfo)
   }
 
   const checkedItems = selectedItems.filter((item) => item.isChecked)
@@ -50,9 +48,10 @@ const ShippingForm = ({
   )
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen bg-light-blue-100">
+      <h2>Shipping Form</h2>
       <form
-        className="mt-4 border border-black rounded p-4"
+        className="mt-4 border-2 border-red-500 w-2/3 rounded-lg p-4 bg-white overflow-auto mb-6"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">

@@ -7,6 +7,7 @@ import {
   selectUser,
   selectIsLoggedIn,
   selectUsername,
+  selectIsAdmin,
 } from "../features/authSlice"
 import OrderHistory from "./OrderHistory"
 
@@ -15,6 +16,7 @@ const Navbar = () => {
   const user = useSelector(selectUser)
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const username = useSelector(selectUsername)
+  const isAdmin = useSelector(selectIsAdmin)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -22,7 +24,13 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false)
 
-  const cartItemCount = cart.reduce((total, item) => total + item.amount, 0)
+  const userId = JSON.parse(localStorage.getItem("user")).id
+  const userCartItems = cart.filter((item) => item.userId === userId)
+
+  const cartItemCount = userCartItems.reduce(
+    (total, item) => total + item.amount,
+    0
+  )
 
   const openModal = () => {
     setIsModalOpen(true)
@@ -37,6 +45,12 @@ const Navbar = () => {
 
   const openOrderHistory = () => {
     setIsOrderHistoryOpen(true)
+  }
+
+  const handleAdminClick = () => {
+    if (isAdmin) {
+      navigate("/admin/orders")
+    }
   }
 
   return (
@@ -110,6 +124,27 @@ const Navbar = () => {
               />
             </svg>
           </div>
+          {isAdmin && (
+            <div
+              className="flex items-center justify-center ml-3 cursor-pointer"
+              onClick={handleAdminClick}
+            >
+              Admin
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-5 h-5 ml-1"
+              >
+                <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          )}
         </div>
       </div>
       {isModalOpen && <ShoppingCart setIsModalOpen={setIsModalOpen} />}

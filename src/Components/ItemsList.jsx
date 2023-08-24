@@ -10,31 +10,23 @@ import { useState } from "react"
 const ItemsList = () => {
   const { type } = useParams()
   const dispatch = useDispatch()
-
   const allItems = [...storeData]
+
+  const [colorFilter, setColorFilter] = useState("")
+  const [sizeFilter, setSizeFilter] = useState("")
+
   dispatch(setItems(allItems))
-
   const itemsOfType = allItems?.filter((item) => item.type === type)
-  console.log("---", itemsOfType)
-
-  const [colorFilter, setColorFilter] = useState("") // Lokalno stanje za boju
-  const [sizeFilter, setSizeFilter] = useState("") // Lokalno stanje za veličinu
 
   const filteredItems = itemsOfType.filter((item) => {
-    console.log(item)
-    // Provera da li stavka ima boju koja sadrži unetu vrednost
     const colorMatches = item.color.find((color) =>
       color.toLowerCase().includes(colorFilter.toLowerCase())
     )
 
-    // Provera da li stavka ima veličinu koja sadrži unetu vrednost
     const sizeMatches = item?.size?.find((size) =>
       size.toLowerCase().includes(sizeFilter.toLowerCase())
     )
-    console.log(colorMatches)
-    console.log(sizeMatches)
 
-    // Vraća true ako i boja i veličina odgovaraju filterima
     return colorMatches && (sizeMatches || !item.size)
   })
 

@@ -6,21 +6,17 @@ import { toast } from "react-toastify"
 
 const AboutItem = () => {
   const { id } = useParams()
-  const items = useSelector((state) => state.items)
   const dispatch = useDispatch()
 
-  console.log("items", items)
+  const items = useSelector((state) => state.items)
+  const userId = JSON.parse(localStorage.getItem("user")).id
 
   const selectedItem = items.find((item) => item.id === id)
-  console.log("selected ITEM", selectedItem)
 
-  const [color, setColor] = useState(selectedItem?.color[0] || "") // Postavi prvu boju ili prazan string ako nema boja
+  const [color, setColor] = useState(selectedItem?.color[0] || "")
   const [size, setSize] = useState(
     selectedItem.size ? selectedItem?.size[0] || "" : ""
   )
-
-  console.log(size)
-  console.log(color)
 
   return (
     <div className="flex justify-center items-center py-10">
@@ -100,6 +96,7 @@ const AboutItem = () => {
                     dispatch(
                       addToCart({
                         ...selectedItem,
+                        userId: userId,
                         selectedColor: color,
                         selectedSize: size,
                       })
